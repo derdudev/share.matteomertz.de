@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>URL Share</title>
+
+    <link rel="stylesheet" href="public/style.css">
+    <link rel="shortcut icon" href="public/favicons/favicon.ico" type="image/x-icon">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <span id="logo">
+        Matteomertz:share
+    </span>
+    <div class="main-container">
+        <div class="login-text">Login</div>
+        <div class="input" desc="Email/Username">
+            <input type="text" placeholder="Enter your email adress / username ..." id="user-input">
+        </div>
+        <div class="input" desc="Password">
+            <input type="password" placeholder="Enter your password..." id="password-input">
+        </div>
+        <button id="login-btn" class="btn">
+            Login
+        </button>
+
+        <script>
+            const userIdentifier = document.getElementById("user-input");
+            const password = document.getElementById("password-input");
+            const loginBtn = document.getElementById("login-btn");
+
+            loginBtn.onclick = () => {
+                console.log(userIdentifier.value)
+                fetch(
+                    "/api/login",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            userIdentifier: userIdentifier.value,
+                            password: password.value
+                        })
+                    }
+                ).then((res) => {
+                    window.location.href = "/";
+                })
+            }
+        </script>
+    </div>
+</body>
+</html>

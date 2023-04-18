@@ -1,0 +1,62 @@
+.dropdown{
+    width: 200px
+}
+
+.dropdown-element{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.folder-header{
+    padding: 5px 8px;
+}
+
+.folder-header:hover{
+    background: #E8E8E6;
+    border-radius: 5px;
+}
+
+.folder-name{
+    margin-left: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    color: #72716C;
+}
+
+.folder-name:hover{
+    cursor: pointer;
+}
+
+.expand-btn{
+    padding: 2px 4px;
+    border-radius: 5px;
+    user-select: none;
+    height: content-box;
+    width: fit-content;
+    display: inline-block;
+}
+
+.expand-btn svg{
+    height: 15px;
+    width: 15px;
+    transition: transform .1s ease;
+    margin: auto;
+}
+
+.expand-btn:hover{
+    cursor: pointer;
+    background: #DFDFDE;
+}
+
+.children{
+    display: none;
+    position: relative;
+    margin-left: 20px;
+}
+
+.no-children{
+    margin-top: 5px;
+    margin-left: 16px;
+    color: #9B9A97;
+}

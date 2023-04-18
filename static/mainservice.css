@@ -1,0 +1,270 @@
+*{
+    margin: 0;
+    font-family: "Inter";
+}
+
+.main-grid{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 50px auto 50px;
+    grid-template-areas:
+    "logo navbar"
+    "sidebar main"
+    "settings main";
+
+    width: 100vw;
+    height: 100vh;
+}
+
+#logo{
+    grid-area: logo;
+
+    display: flex;
+    align-items: center;
+
+    padding: 10px 20px;
+
+    background: #F7F7F5;
+}
+
+#sidebar{
+    background: #F7F7F5;
+
+    padding: 20px;
+
+    grid-area: sidebar;
+}
+
+#setting-btn-container{
+
+}
+
+#navbar{
+    grid-area: navbar;
+
+    padding: 10px 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-element{
+    height: max-content;
+}
+
+#main-container{
+}
+
+#main{
+    grid-area: main;
+
+    padding: 10px 40px;
+}
+
+#main-header{
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 40px;
+}
+
+#link-search{
+    background: #F7F6F4;
+    border: 2px solid #DFDEDD;
+    border-radius: 5px;
+    padding-left: 10px;
+
+    width: 40%;
+
+    display: flex;
+    align-items: center;
+}
+#link-search input{
+    background: #F7F6F4;
+    color: #72716C;
+
+    padding: 10px 20px 10px 10px;
+
+    font-size: 14px;
+
+    border: none;
+}
+#link-search input:focus{
+    outline: none;
+}
+#link-search svg{
+    width: 15px;
+    height: 15px;
+}
+
+.link-element{
+    display: grid;
+
+    align-items: center;
+
+    grid-gap: 10px;
+
+    grid-template-columns: 15% fit-content(25%) fit-content(5%) fit-content(10%) auto 15%;
+    grid-template-rows: auto;
+    grid-template-areas: "title link qrcode interactions . edit";
+
+    background: #F7F7F5;
+    border-radius: 15px;
+    padding: 20px 20px 20px 30px;
+
+    margin-bottom: 20px;
+}
+
+.link-element-title{
+    grid-area: title;
+
+    font-weight: bold;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.link-element-link{
+    grid-area: link;
+
+    background: #EFEFED;
+    border-radius: 5px;
+
+    padding: 10px 20px 10px 20px;
+
+    color: #72716C;
+
+    width: fit-content;
+
+    display: grid;
+    grid-template: "a b";
+    grid-gap: 10px;
+}
+
+.link-element-link-text{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.link-element-link svg{
+    height: 15px;
+    width: 15px;
+
+    align-self: center;
+}
+
+.link-element-qrcode{
+    background: #EFEFED;
+    border-radius: 5px;
+    padding: 10px;
+
+    height: max-content;
+    width: max-content;
+
+    box-sizing: border-box;
+
+    display: flex;
+}
+.link-element-qrcode:hover{
+    background: #E8E8E6;
+    cursor: pointer;
+}
+
+.link-element-qrcode svg {
+    height: 15px;
+    width: 15px;
+}
+
+.link-element-interactions{
+    background: #EFEFED;
+    border-radius: 5px;
+    padding: 10px 15px;
+    color: #72716C;
+
+    height: max-content;
+    width: max-content;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+}
+.link-element-interactions svg {
+    height: 15px;
+    width: 15px;
+
+    margin-right: 10px;
+}
+
+.link-element-edit{
+    grid-area: edit;
+}
+
+.primary-btn{
+    padding: 10px 20px 10px 15px;
+    background: #293489;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+
+    width: max-content;
+
+    display: flex;
+    align-items: center;
+}
+.primary-btn:hover{
+    background: #212A75;
+    cursor: pointer;
+}
+
+.primary-btn svg {
+    height: 20px;
+    width: 20px;
+
+    margin-right: 5px;
+}
+
+.secondary-btn{
+    padding: 10px 20px;
+    background: #EFEFED;
+    border-radius: 5px;
+    color: #72716C;
+    font-weight: bold;
+
+    justify-self: end;
+
+    width: max-content;
+
+    display: flex;
+    align-items: center;
+}
+.secondary-btn:hover{
+    cursor: pointer;
+    background: #E8E8E6;
+}
+.secondary-btn svg {
+    height: 15px;
+    width: 15px;
+
+    margin-right: 5px;
+}
+
+@media only screen and (min-width: 1400px) {
+    .main-grid {grid-template-columns: 400px 3fr;}
+}
+
+@media only screen and (min-width: 1600px) {
+    #main{
+        max-width: 1100px;
+    }
+    #main-container{
+        display: flex;
+        justify-content: center;
+    }
+    .link-element{
+        grid-template-columns: 200px fit-content(400px) fit-content(20px) fit-content(50px) minmax(250px, auto) fit-content(100px);
+    }
+}
