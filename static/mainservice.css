@@ -6,9 +6,10 @@
 .main-grid{
     display: grid;
     grid-template-columns: 1fr 3fr;
-    grid-template-rows: 50px auto 75px;
+    grid-template-rows: 50px 85px calc(100vh - 210px) 75px;
     grid-template-areas:
     "logo navbar"
+    "sidebar search"
     "sidebar main"
     "settings main";
 
@@ -61,22 +62,32 @@
     height: max-content;
 }
 
+#main-header{
+    grid-area: search;
+
+    padding: 20px 40px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
 #main-container{
+    height: calc(100vh - 210px);
 }
 
 #main{
     grid-area: main;
 
-    padding: 10px 40px;
-
     transition: max-width .5s ease;
+
+    height: inherit;
+    overflow: auto;
 }
 
-#main-header{
-    display: flex;
-    justify-content: space-between;
+#main-shrinker{
+    height: inherit;
 
-    margin-bottom: 40px;
+    padding: 10px 40px;
 }
 
 #link-search{
@@ -100,6 +111,8 @@
     font-size: 14px;
 
     border: none;
+
+    width: 100%;
 }
 #link-search input:focus{
     outline: none;
@@ -107,6 +120,10 @@
 #link-search svg{
     width: 15px;
     height: 15px;
+}
+
+#link-elements-container{
+    overflow: auto;
 }
 
 .link-element{
@@ -281,10 +298,10 @@
 }
 
 @media only screen and (min-width: 1600px) {
-    #main{
-        max-width: 1100px;
+    #main, #main-header{
+        width: 1100px;
     }
-    #main-container{
+    #main-container, #main-header-container{
         display: flex;
         justify-content: center;
     }
