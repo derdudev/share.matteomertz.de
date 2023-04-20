@@ -12,4 +12,7 @@ A personal "link-shortener" for `matteomertz.de`. With a dashboard on `share.mat
 ![Login Page](github/img/user-options-popup.png)
 
 ## API Endpoints
-![APi Endpoints](github/img/api-endpoints.png)
+![API Endpoints](github/img/api-endpoints.png)
+
+## Documents
+![MongoDB Document Schemes](github/img/documents.png)
