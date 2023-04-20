@@ -6,7 +6,7 @@
 .main-grid{
     display: grid;
     grid-template-columns: 1fr 3fr;
-    grid-template-rows: 50px auto 50px;
+    grid-template-rows: 50px auto 75px;
     grid-template-areas:
     "logo navbar"
     "sidebar main"
@@ -36,7 +36,15 @@
 }
 
 #setting-btn-container{
+    grid-area: settings;
 
+    background: #F7F7F5;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
 }
 
 #navbar{
@@ -60,6 +68,8 @@
     grid-area: main;
 
     padding: 10px 40px;
+
+    transition: max-width .5s ease;
 }
 
 #main-header{
@@ -75,7 +85,8 @@
     border-radius: 5px;
     padding-left: 10px;
 
-    width: 40%;
+    min-width: 40%;
+    width: fit-content;
 
     display: flex;
     align-items: center;
@@ -142,7 +153,10 @@
     grid-template: "a b";
     grid-gap: 10px;
 }
-
+.link-element-link:hover{
+    background: #E8E8E6;
+    cursor: pointer;
+}
 .link-element-link-text{
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -250,6 +264,16 @@
     width: 15px;
 
     margin-right: 5px;
+}
+
+.sidebar-btn{
+    width: auto;
+    background: none;
+    font-weight: normal;
+}
+
+.btn{
+    transition: .2s ease;
 }
 
 @media only screen and (min-width: 1400px) {

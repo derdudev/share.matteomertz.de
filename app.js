@@ -24,11 +24,10 @@ mongoose.connect(
     MONGO_URI
 ).then(async () => {
    const user = await User.create({
-       name: "matteo",
-       pw: await bycrypt.hash("Ja6Ki20Ei.share", 10),
+       name: "test",
+       pw: await bcrypt.hash("test", 10),
        email: "matteo.mertz04@gmail.com",
    });
-    console.log(user);
 });
 */
 
@@ -48,7 +47,6 @@ app.get("/", auth, (req, res)=>{
 app.post("/api/login", async (req, res) => {
     try {
         // Get user input
-        console.log(req.body)
         const { userIdentifier, password } = req.body;
 
         // Validate user input
