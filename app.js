@@ -7,10 +7,11 @@ const jwt = require("jsonwebtoken");
 
 require('dotenv').config()
 
-const { MONGO_URI } = process.env;
+const { MONGO_URI, INTERVAL_RANGE } = process.env;
 
 const mongoose = require("mongoose");
 const User = require("./models/userModel");
+const Link = require("./models/linkModel");
 const bcrypt = require("bcryptjs");
 
 const auth = require("./auth");
@@ -36,7 +37,58 @@ app.use("/public", express.static(path.join(__dirname, "static")));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+// ### CRUD ###
+app.post("/api/create", auth, async (req, res) => {
+    if (req.user && validateCreate(req.body)) {
+        let userId = new mongoose.Types.ObjectId(req.user.user_id);
+        let linkId = randomId();
+        console.log(linkId)
+        while ((await Link.findOne({id: linkId})) != null){
+            linkId = randomId();
+        }
+
+        let link = {
+            title: req.body.title,
+            link: req.body.link,
+            parent: new mongoose.Types.ObjectId(req.body.parent),
+            owner: userId,
+            interactions: 0,
+            activated: true,
+            id: linkId
+        }
+
+        let insertedLink = await Link.create(link);
+
+        res.json(insertedLink);
+    } else {
+        return res.status(403).send("A signed user token is required for authentication");
+    }
+});
+const validateCreate = (body) => {
+    return body.title != null && body.link != null && body.parent != null
+}
+const randomId = function(length = 6) {
+    return Math.random().toString(36).substring(2, length+2);
+};
+
+app.get("/api/get", auth, async (req, res) => {
+    if (!validateGetLinks(req.body)) return res.status(400).send("The received body was not sufficient");
+    if (req.user) {
+        let parentId = new mongoose.Types.ObjectId(req.body.folderId);
+        let links = await Link.find({parent: parentId}).skip(req.body.interval * INTERVAL_RANGE).limit(INTERVAL_RANGE);
+        return res.json(links);
+    } else {
+        return res.status(403).send("A signed user token is required for authentication");
+    }
+});
+const validateGetLinks = (body) => {
+    return body.folderId != null && body.interval != null;
+}
+
+// ### AUTHENTIFICATION ###
+
 app.get("/", auth, (req, res)=>{
+    console.log(req.user)
     if(req.user){
         res.sendFile(path.join(__dirname, "static", "mainservice.html"));
     } else {
@@ -75,6 +127,7 @@ app.post("/api/login", async (req, res) => {
 
             // user
             res.cookie("mashareusr", user.token);
+            res.cookie("mashareusrid", user._id);
             res.status(200).json({
                 jwt: user.token,
             });
