@@ -12,6 +12,7 @@ const { MONGO_URI, INTERVAL_RANGE } = process.env;
 const mongoose = require("mongoose");
 const User = require("./models/userModel");
 const Link = require("./models/linkModel");
+const Folder = require("./models/folderModel");
 const bcrypt = require("bcryptjs");
 
 const auth = require("./auth");
@@ -67,6 +68,7 @@ app.post("/api/create", auth, async (req, res) => {
 const validateCreate = (body) => {
     return body.title != null && body.link != null && body.parent != null
 }
+// source: https://www.codemzy.com/blog/random-unique-id-javascript
 const randomId = function(length = 6) {
     return Math.random().toString(36).substring(2, length+2);
 };
@@ -84,6 +86,21 @@ app.get("/api/get", auth, async (req, res) => {
 const validateGetLinks = (body) => {
     return body.folderId != null && body.interval != null;
 }
+
+app.post("/api/subfolders", auth, async (req, res) => {
+    if(!validateGetSubfolders(req.body)) return res.status(400).send("Body is not sufficient");
+    let folderId = new mongoose.Types.ObjectId(req.body.folderId);
+    let subfolders = await Folder.find({parent: folderId});
+    return res.json(subfolders);
+});
+const validateGetSubfolders = (body) => {
+    return body.folderId != null;
+}
+
+app.get("/api/folders", auth, async (req, res) => {
+    let folders = await Folder.find({parent: null});
+    return res.json(folders);
+});
 
 // ### AUTHENTIFICATION ###
 
@@ -127,7 +144,6 @@ app.post("/api/login", async (req, res) => {
 
             // user
             res.cookie("mashareusr", user.token);
-            res.cookie("mashareusrid", user._id);
             res.status(200).json({
                 jwt: user.token,
             });

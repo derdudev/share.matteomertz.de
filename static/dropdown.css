@@ -9,11 +9,13 @@
 
 .folder-header{
     padding: 5px 8px;
+    transition: .2s ease;
 }
 
 .folder-header:hover{
     background: #E8E8E6;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .folder-name{
@@ -22,6 +24,8 @@
     text-overflow: ellipsis;
 
     color: #72716C;
+
+    user-select: none;
 }
 
 .folder-name:hover{
