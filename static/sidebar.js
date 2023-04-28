@@ -6,6 +6,40 @@ class Navigation{
     }
 }
 
+class Navigator{
+    constructor() {
+    }
+
+    static loadPopup(popupBuilder){
+        let popup = popupBuilder();
+        let onclick = popup.onclick;
+        popup.onclick = (e) => {
+            onclick(e);
+            e.stopPropagation();
+        }
+
+        let background = document.createElement("div");
+        background.style.backgroundColor = "rgba(0,0,0,.2)";
+        background.style.zIndex = "5000";
+        background.style.position = "absolute";
+        background.style.display = "flex";
+        background.style.alignItems = "center";
+        background.style.justifyContent = "center";
+        background.style.top = "0px";
+        background.style.height = "100vh";
+        background.style.width = "100vw";
+        background.onclick = (e) => {
+            console.log("background")
+            if(e.target != popup){
+                e.target.remove();
+            }
+        }
+
+        background.append(popup);
+        document.body.append(background);
+    }
+}
+
 class Main{
     constructor() {
         this.intervalPeriod = 0;
@@ -53,6 +87,7 @@ class Link{
         link.innerHTML += "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"48\" viewBox=\"0 96 960 960\" width=\"48\"><path d=\"M450 776H280q-83 0-141.5-58.5T80 576q0-83 58.5-141.5T280 376h170v60H280q-58.333 0-99.167 40.765-40.833 40.764-40.833 99Q140 634 180.833 675q40.834 41 99.167 41h170v60ZM325 606v-60h310v60H325Zm185 170v-60h170q58.333 0 99.167-40.765 40.833-40.764 40.833-99Q820 518 779.167 477 738.333 436 680 436H510v-60h170q83 0 141.5 58.5T880 576q0 83-58.5 141.5T680 776H510Z\"/></svg>";
         link.onclick = () => {
             // TODO
+            copyTextToClipboard("https://matteomertz.de/s/"+objectInfo.linkId);
         }
 
         let qrCode = document.createElement("div");
@@ -60,6 +95,16 @@ class Link{
         qrCode.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"48\" viewBox=\"0 96 960 960\" width=\"48\"><path d=\"M120 546V216h330v330H120Zm60-60h210V276H180v210Zm-60 450V606h330v330H120Zm60-60h210V666H180v210Zm330-330V216h330v330H510Zm60-60h210V276H570v210Zm188 450v-82h82v82h-82ZM510 689v-83h82v83h-82Zm82 82v-82h83v82h-83Zm-82 83v-83h82v83h-82Zm82 82v-82h83v82h-83Zm83-82v-83h83v83h-83Zm0-165v-83h83v83h-83Zm83 82v-82h82v82h-82Z\"/></svg>";
         qrCode.onclick = () => {
             // TODO
+            Navigator.loadPopup(() => {
+                let popup = document.createElement("div");
+                popup.style.height = "400px";
+                popup.style.width = "600px";
+                popup.style.background = "#fff";
+                popup.onclick = (e) => {
+                    console.log("popup");
+                }
+                return popup;
+            });
         }
 
         let interactions = document.createElement("div");
@@ -76,6 +121,16 @@ class Link{
         editBtn.innerHTML += "Bearbeiten";
         editBtn.onclick = () => {
             // TODO
+            Navigator.loadPopup(() => {
+                let popup = document.createElement("div");
+                popup.style.height = "400px";
+                popup.style.width = "600px";
+                popup.style.background = "#fff";
+                popup.onclick = (e) => {
+                    console.log("popup");
+                }
+                return popup;
+            });
         }
 
         linkElement.append(title, link, qrCode, interactions, editBtn);
