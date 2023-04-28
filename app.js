@@ -73,11 +73,11 @@ const randomId = function(length = 6) {
     return Math.random().toString(36).substring(2, length+2);
 };
 
-app.get("/api/get", auth, async (req, res) => {
+app.post("/api/get", auth, async (req, res) => {
     if (!validateGetLinks(req.body)) return res.status(400).send("The received body was not sufficient");
     if (req.user) {
         let parentId = new mongoose.Types.ObjectId(req.body.folderId);
-        let links = await Link.find({parent: parentId}).skip(req.body.interval * INTERVAL_RANGE).limit(INTERVAL_RANGE);
+        let links = await Link.find({parent: parentId, owner:  new mongoose.Types.ObjectId(req.user.user_id)}).skip(req.body.interval * INTERVAL_RANGE).limit(INTERVAL_RANGE);
         return res.json(links);
     } else {
         return res.status(403).send("A signed user token is required for authentication");
@@ -90,7 +90,7 @@ const validateGetLinks = (body) => {
 app.post("/api/subfolders", auth, async (req, res) => {
     if(!validateGetSubfolders(req.body)) return res.status(400).send("Body is not sufficient");
     let folderId = new mongoose.Types.ObjectId(req.body.folderId);
-    let subfolders = await Folder.find({parent: folderId});
+    let subfolders = await Folder.find({parent: folderId, owner: new mongoose.Types.ObjectId(req.user.user_id)});
     return res.json(subfolders);
 });
 const validateGetSubfolders = (body) => {
@@ -98,7 +98,7 @@ const validateGetSubfolders = (body) => {
 }
 
 app.get("/api/folders", auth, async (req, res) => {
-    let folders = await Folder.find({parent: null});
+    let folders = await Folder.find({parent: null, owner: new mongoose.Types.ObjectId(req.user.user_id)});
     return res.json(folders);
 });
 
