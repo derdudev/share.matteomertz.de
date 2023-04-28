@@ -36,6 +36,14 @@ class Link{
         title.className = "link-element-title";
         title.innerText = objectInfo.title;
 
+        tippy(title, {
+            arrow: false,
+            delay: [800,0],
+            content: objectInfo.title,
+            placement: "top-start",
+            animation: "scale-subtle"
+        })
+
         let link = document.createElement("span");
         link.className = "link-element-link";
         let linkText = document.createElement("span");
