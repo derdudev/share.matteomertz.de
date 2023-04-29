@@ -1,6 +1,6 @@
 const sidebar = document.getElementById("sidebar");
 
-class Navigation{
+class FolderNavigation{
     constructor() {
 
     }
@@ -17,6 +17,17 @@ class Navigator{
             onclick(e);
             e.stopPropagation();
         }
+        popup.style.minWidth = "30vh";
+
+        let popupContainer = document.createElement("div");
+        popupContainer.append(popup);
+        let clickInfo = document.createElement("span");
+        clickInfo.style.padding = "5px 5px";
+        clickInfo.style.fontSize = ".75em";
+        clickInfo.style.color = "#72716C";
+        clickInfo.style.userSelect = "none";
+        clickInfo.innerText = "Klicke neben das Popup, um es zu schließen";
+        popupContainer.append(clickInfo);
 
         let background = document.createElement("div");
         background.style.backgroundColor = "rgba(0,0,0,.2)";
@@ -29,13 +40,12 @@ class Navigator{
         background.style.height = "100vh";
         background.style.width = "100vw";
         background.onclick = (e) => {
-            console.log("background")
             if(e.target != popup){
                 e.target.remove();
             }
         }
 
-        background.append(popup);
+        background.append(popupContainer);
         document.body.append(background);
     }
 }
@@ -72,7 +82,7 @@ class Link{
 
         tippy(title, {
             arrow: false,
-            delay: [800,0],
+            delay: [400,0],
             content: objectInfo.title,
             placement: "top-start",
             animation: "scale-subtle"
@@ -97,12 +107,69 @@ class Link{
             // TODO
             Navigator.loadPopup(() => {
                 let popup = document.createElement("div");
-                popup.style.height = "400px";
-                popup.style.width = "600px";
                 popup.style.background = "#fff";
+                popup.style.padding = "20px 30px";
                 popup.onclick = (e) => {
                     console.log("popup");
                 }
+
+                let title = document.createElement("div");
+                title.innerText = "QR-Code";
+                title.style.paddingBottom = "20px";
+                popup.append(title);
+
+                let contentContainer = document.createElement("div");
+                contentContainer.style.display = "flex";
+                contentContainer.style.alignItems = "center";
+                contentContainer.style.justifyContent = "stretch";
+                contentContainer.style.flexDirection = "column";
+
+                let canvas = document.createElement("canvas");
+                new QRious({
+                    element: canvas,
+                    size: 256,
+                    value: "https://matteomertz.de/s/"+objectInfo.linkId
+                });
+                contentContainer.append(canvas);
+
+                let name = document.createElement("div");
+                name.style.textAlign = "center";
+                name.style.maxWidth = canvas.width+"px";
+                name.style.fontWeight = "bold";
+                name.style.marginTop = "10px";
+                name.innerText = objectInfo.title;
+
+                let link = document.createElement("span");
+                link.style.textAlign = "center";
+                link.style.maxWidth = canvas.width+"px";
+                link.style.marginTop = "10px";
+                link.style.marginBottom = "20px";
+                link.innerText = "https://matteomertz.de/s/"+objectInfo.linkId;
+
+                let downloadPngBtn = document.createElement("div");
+                downloadPngBtn.innerText = "Download PNG";
+                downloadPngBtn.className = "primary-btn";
+                downloadPngBtn.style.textAlign = "center";
+                downloadPngBtn.style.display = "block";
+                downloadPngBtn.style.width = "unset";
+                downloadPngBtn.onclick = () => {
+                    canvas.toBlob((blob) => {
+                        let a = document.createElement("a");
+                        a.href = window.URL.createObjectURL(blob);
+                        a.setAttribute("download", "matteomertz-"+objectInfo.linkId+".png")
+                        document.body.append(a);
+                        a.click();
+                    });
+                }
+
+                let downloadPngContainer = document.createElement("div");
+                downloadPngContainer.style.width = canvas.width + "px";
+                downloadPngContainer.append(downloadPngBtn);
+
+                contentContainer.append(name, link, downloadPngContainer);
+
+                popup.append(contentContainer)
+
                 return popup;
             });
         }
@@ -136,6 +203,21 @@ class Link{
         linkElement.append(title, link, qrCode, interactions, editBtn);
         main.addLink(linkElement);
     }
+}
+
+const newLinkBtn = document.getElementById("new-link-btn");
+newLinkBtn.onclick = () => {
+    Navigator.loadPopup(() => {
+        let popup = document.createElement("div");
+        popup.style.height = "400px";
+        popup.style.width = "600px";
+        popup.style.background = "#fff";
+        popup.onclick = (e) => {
+            console.log("popup");
+        }
+
+        return popup;
+    });
 }
 
 let dropdown = new Dropdown();

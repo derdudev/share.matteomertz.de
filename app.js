@@ -153,6 +153,18 @@ app.post("/api/login", async (req, res) => {
     } catch (err) {
         console.log(err);
     }
+});
+
+
+// ### id listener ###
+app.get("/s/:linkId", async (req, res) => {
+    let link = (await Link.find({id: req.params.linkId}));
+    if(link.length != 0){
+        await Link.updateOne({id: req.params.linkId}, {interactions: link[0].interactions+1})
+        res.redirect(link[0].link);
+    } else {
+        res.sendFile(path.join(__dirname, "static", "nolinkfound.html"));
+    }
 })
 
 app.listen(8080);
