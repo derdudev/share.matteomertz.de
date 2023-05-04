@@ -53,6 +53,7 @@ class Link{
                 contentContainer.style.alignItems = "center";
                 contentContainer.style.justifyContent = "stretch";
                 contentContainer.style.flexDirection = "column";
+                contentContainer.style.padding = "20px 30px"
 
                 let canvas = document.createElement("canvas");
                 new QRious({
@@ -131,6 +132,9 @@ class Link{
                 title.style.paddingBottom = "20px";
                 popup.append(title);
 
+                let contentContainer = document.createElement("div");
+                contentContainer.style.padding = "20px 30px";
+
                 let linkFieldContainer = document.createElement("div");
                 linkFieldContainer.className = "input";
                 linkFieldContainer.setAttribute("desc", "Ziel-URL");
@@ -167,7 +171,9 @@ class Link{
                 editButton.style.width = "unset";
                 actionButtonContainer.append(editButton);
 
-                popup.append(linkFieldContainer, titleFieldContainer, actionButtonContainer);
+                contentContainer.append(linkFieldContainer, titleFieldContainer, actionButtonContainer)
+
+                popup.append(contentContainer);
 
                 return popup;
             });
