@@ -8,8 +8,10 @@
 }
 
 .folder-header{
-    padding: 5px 8px;
+    padding: 2px 4px;
     transition: .2s ease;
+    display: flex;
+    align-items: center;
 }
 
 .folder-header:hover{
@@ -26,6 +28,8 @@
     color: #72716C;
 
     user-select: none;
+
+    flex: 1 1 auto;
 }
 
 .folder-name:hover{
