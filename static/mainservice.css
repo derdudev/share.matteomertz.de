@@ -1,6 +1,8 @@
 *{
     margin: 0;
     font-family: "Inter";
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .main-grid{
@@ -84,6 +86,11 @@
     overflow: auto;
 }
 
+#main-info-text{
+    text-align: center;
+    color: #B4B3AF;
+}
+
 #main-shrinker{
     height: inherit;
 
@@ -106,7 +113,7 @@
     background: #F7F6F4;
     color: #72716C;
 
-    padding: 10px 20px 10px 10px;
+    padding: 0px 10px;
 
     font-size: 14px;
 
@@ -178,6 +185,8 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    font-family: "Roboto Mono";
+    font-size: .95em;
 }
 
 .link-element-link svg{
@@ -293,8 +302,38 @@
     transition: .2s ease;
 }
 
+.input{
+    margin-bottom: 10px;
+}
+
+.input::before{
+    content: attr(desc);
+    position: relative;
+
+    font-size: .7em;
+
+    color: #37352F;
+
+    margin-left: 5px;
+}
+
+.input-element{
+    background: #F7F6F4;
+    color: #37352F;
+    border: 2px solid #DFDEDD;
+    border-radius: 5px;
+
+    padding: 5px 10px;
+
+    flex: 100%;
+
+    /*
+    placeholder: attr(placeholder);
+     */
+}
+
 @media only screen and (min-width: 1400px) {
-    .main-grid {grid-template-columns: 400px 3fr;}
+    .main-grid {grid-template-columns: 300px 3fr;}
 }
 
 @media only screen and (min-width: 1600px) {

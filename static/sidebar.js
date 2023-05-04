@@ -4,6 +4,16 @@ class FolderNavigation{
     constructor() {
 
     }
+    getPathAsString(){
+
+    }
+    getPath(){
+
+    }
+}
+
+class Path{
+
 }
 
 class Navigator{
@@ -14,7 +24,7 @@ class Navigator{
         let popup = popupBuilder();
         let onclick = popup.onclick;
         popup.onclick = (e) => {
-            onclick(e);
+            if(onclick) onclick(e);
             e.stopPropagation();
         }
         popup.style.minWidth = "30vh";
@@ -54,6 +64,7 @@ class Main{
     constructor() {
         this.intervalPeriod = 0;
         this.mainElement = document.getElementById("main");
+        this.reset();
     }
     addLink(link){
         this.mainElement.append(link);
@@ -61,8 +72,11 @@ class Main{
     clear(){
         this.mainElement.innerHTML = "";
     }
+    reset(){
+        this.mainElement.innerHTML = "<div id=\"main-info-text\">Navigiere einfach in einen deiner Ordner oder erstelle einen Ordner, um mit Links zu arbeiten</div>";
+    }
     setNone(){
-        this.mainElement.innerHTML = "Keine Links hier";
+        this.mainElement.innerHTML = "<div id=\"main-info-text\">Hier sind noch keine Links</div>";
     }
 }
 
@@ -109,12 +123,10 @@ class Link{
                 let popup = document.createElement("div");
                 popup.style.background = "#fff";
                 popup.style.padding = "20px 30px";
-                popup.onclick = (e) => {
-                    console.log("popup");
-                }
 
                 let title = document.createElement("div");
                 title.innerText = "QR-Code";
+                title.style.color = "#B4B3AF";
                 title.style.paddingBottom = "20px";
                 popup.append(title);
 
@@ -144,6 +156,8 @@ class Link{
                 link.style.maxWidth = canvas.width+"px";
                 link.style.marginTop = "10px";
                 link.style.marginBottom = "20px";
+                link.style.fontFamily = "Roboto Mono";
+                link.style.fontSize = ".95em";
                 link.innerText = "https://matteomertz.de/s/"+objectInfo.linkId;
 
                 let downloadPngBtn = document.createElement("div");
@@ -190,12 +204,53 @@ class Link{
             // TODO
             Navigator.loadPopup(() => {
                 let popup = document.createElement("div");
-                popup.style.height = "400px";
-                popup.style.width = "600px";
                 popup.style.background = "#fff";
-                popup.onclick = (e) => {
-                    console.log("popup");
-                }
+                popup.style.padding = "20px 30px";
+
+                let title = document.createElement("div");
+                title.innerText = "Link Bearbeiten";
+                title.style.color = "#B4B3AF";
+                title.style.paddingBottom = "20px";
+                popup.append(title);
+
+                let linkFieldContainer = document.createElement("div");
+                linkFieldContainer.className = "input";
+                linkFieldContainer.setAttribute("desc", "Ziel-URL");
+                let linkFieldFlexContainer = document.createElement("div");
+                linkFieldFlexContainer.style.display = "flex";
+                let linkField = document.createElement("input");
+                linkField.className = "input-element";
+                linkField.type = "text";
+                linkField.placeholder = "https://example.com";
+                linkField.value = objectInfo.link;
+                linkFieldFlexContainer.append(linkField);
+                linkFieldContainer.append(linkFieldFlexContainer);
+
+                let titleFieldContainer = document.createElement("div");
+                titleFieldContainer.className = "input";
+                titleFieldContainer.setAttribute("desc", "Titel");
+                let titleFieldFlexContainer = document.createElement("div");
+                titleFieldFlexContainer.style.display = "flex";
+                let titleField = document.createElement("input");
+                titleField.className = "input-element";
+                titleField.type = "text";
+                titleField.placeholder = "Beispiel Titel";
+                titleField.value = objectInfo.title;
+                titleFieldFlexContainer.append(titleField);
+                titleFieldContainer.append(titleFieldFlexContainer);
+
+                let actionButtonContainer = document.createElement("div");
+                actionButtonContainer.style.marginTop = "20px";
+                let editButton = document.createElement("div");
+                editButton.innerText = "Speichern";
+                editButton.className = "primary-btn";
+                editButton.style.textAlign = "center";
+                editButton.style.display = "block";
+                editButton.style.width = "unset";
+                actionButtonContainer.append(editButton);
+
+                popup.append(linkFieldContainer, titleFieldContainer, actionButtonContainer);
+
                 return popup;
             });
         }
@@ -205,52 +260,109 @@ class Link{
     }
 }
 
-const newLinkBtn = document.getElementById("new-link-btn");
-newLinkBtn.onclick = () => {
-    Navigator.loadPopup(() => {
-        let popup = document.createElement("div");
-        popup.style.height = "400px";
-        popup.style.width = "600px";
-        popup.style.background = "#fff";
-        popup.onclick = (e) => {
-            console.log("popup");
-        }
-
-        return popup;
-    });
-}
-
-let dropdown = new Dropdown();
 let main = new Main();
 
+let dropdown = new Dropdown({main: main});
+
+const newLinkBtn = document.getElementById("new-link-btn");
+const newLinkBtnDeactivatedTippy = tippy(newLinkBtn, {
+    arrow: true,
+    trigger: "click",
+    content: "Navigiere erst in einen Ordner!",
+    placement: "bottom",
+    animation: "shift-away",
+    duration: [100,100]
+});
+
+newLinkBtn.onclick = () => {
+    if(dropdown.activeNode != null) {
+        Navigator.loadPopup(() => {
+            let popup = document.createElement("div");
+            popup.style.background = "#fff";
+            popup.style.padding = "20px 30px";
+
+            let title = document.createElement("div");
+            title.innerText = "Neuer Link";
+            title.style.color = "#B4B3AF";
+            title.style.paddingBottom = "20px";
+            popup.append(title);
+
+            let linkFieldContainer = document.createElement("div");
+            linkFieldContainer.className = "input";
+            linkFieldContainer.setAttribute("desc", "Ziel-URL");
+            let linkFieldFlexContainer = document.createElement("div");
+            linkFieldFlexContainer.style.display = "flex";
+            let linkField = document.createElement("input");
+            linkField.className = "input-element";
+            linkField.type = "text";
+            linkField.placeholder = "https://example.com";
+            linkFieldFlexContainer.append(linkField);
+            linkFieldContainer.append(linkFieldFlexContainer);
+
+            let titleFieldContainer = document.createElement("div");
+            titleFieldContainer.className = "input";
+            titleFieldContainer.setAttribute("desc", "Titel");
+            let titleFieldFlexContainer = document.createElement("div");
+            titleFieldFlexContainer.style.display = "flex";
+            let titleField = document.createElement("input");
+            titleField.className = "input-element";
+            titleField.type = "text";
+            titleField.placeholder = "Beispiel Titel";
+            titleFieldFlexContainer.append(titleField);
+            titleFieldContainer.append(titleFieldFlexContainer);
+
+            let actionButtonContainer = document.createElement("div");
+            actionButtonContainer.style.marginTop = "20px";
+            let createButton = document.createElement("div");
+            createButton.innerText = "Erstellen";
+            createButton.className = "primary-btn";
+            createButton.style.textAlign = "center";
+            createButton.style.display = "block";
+            createButton.style.width = "unset";
+            actionButtonContainer.append(createButton);
+
+            popup.append(linkFieldContainer, titleFieldContainer, actionButtonContainer);
+
+            return popup;
+        });
+    }
+}
+
 const onFolderClick = (objectInfo) => {
-    fetch("/api/get",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                interval: main.intervalPeriod,
-                folderId: objectInfo.id
-            })
-        }).then(data => data.json()).then(data => {
-        main.clear();
-        if(data.length == 0){
-            main.setNone();
-        } else {
-            let link, dbLink;
-            for (let i = 0; i < data.length; i++) {
-                dbLink = data[i];
-                link = new Link({
-                    title: dbLink.title,
-                    linkId: dbLink.id,
-                    id: dbLink._id,
-                    interactions: dbLink.interactions
-                }, main);
+    console.log(dropdown.activeNode)
+    if(dropdown.activeNode == null){
+        newLinkBtnDeactivatedTippy.enable();
+    } else {
+        newLinkBtnDeactivatedTippy.disable();
+        fetch("/api/get",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    interval: main.intervalPeriod,
+                    folderId: objectInfo.id
+                })
+            }).then(data => data.json()).then(data => {
+            main.clear();
+            if(data.length == 0){
+                main.setNone();
+            } else {
+                let link, dbLink;
+                for (let i = 0; i < data.length; i++) {
+                    dbLink = data[i];
+                    link = new Link({
+                        title: dbLink.title,
+                        link: dbLink.link,
+                        linkId: dbLink.id,
+                        id: dbLink._id,
+                        interactions: dbLink.interactions
+                    }, main);
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 const load = (childrenContainer, preLoadedChildren, objectInfo) => {

@@ -97,6 +97,8 @@ class Dropnode {
 
             this.domElements.folderHeader.style.background = "none";
             this.clicked = false;
+            dropdown.activeNode = null;
+            dropdown.objectInfo.main.reset();
         } else {
             // was newly clicked => activate
             this._deactivateOthers();
@@ -106,6 +108,7 @@ class Dropnode {
 
             this.domElements.folderHeader.style.backgroundColor = "#ededeb";
             this.clicked = true;
+            dropdown.activeNode = this;
         }
     }
 
@@ -120,8 +123,10 @@ class Dropnode {
 }
 
 class Dropdown{
-    constructor() {
+    constructor(objectInfo) {
         this.nodes = [];
+        this.activeNode = null;
+        this.objectInfo = objectInfo;
     }
 
     addNode(node){

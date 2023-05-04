@@ -4,19 +4,48 @@
     <meta charset="UTF-8">
     <title>No Link Found</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
     *{
       font-family: "Uncut Sans VF";
+        font-size: 1.25em;
+        margin: 0px;
+    }
+
+    body{
+        margin: 0px;
+        padding: 30px 40px;
+
+        overflow: hidden;
     }
 
     code{
       font-family: "Martian Mono";
       font-size: .8em;
     }
+
+    #error-code{
+        font-size: 20em;
+        font-weight: bold;
+
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+
+        line-height: .75;
+    }
   </style>
 </head>
 <body>
-  Oups, diesen Link scheint es nicht mehr zu geben (vielleicht hat es ihn auch nie gegeben? 🧐). <br>
-  Überprüfe am besten einfach noch einmal genau die Link-Id (also der Teil <code>&lt;id&gt;</code> in <code>https://matteomertz.de/s/&lt;id&gt;</code>).
+  <p>
+      Oups, diesen Link scheint es nicht mehr zu geben (vielleicht hat es ihn auch nie gegeben? 🧐).
+  </p>
+<p>
+    Überprüfe am besten einfach noch einmal genau die Link-Id (also der Teil <code>&lt;id&gt;</code> in <code>https://matteomertz.de/s/&lt;id&gt;</code>).
+</p>
+<p id="error-code">
+    404
+</p>
 </body>
 </html>
