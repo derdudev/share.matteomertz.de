@@ -160,4 +160,11 @@ class Dropdown{
     addNode(node){
         this.nodes.push(node);
     }
+
+    getNode(id){
+        for (let i = 0; i < this.nodes.length; i++) {
+            if(this.nodes[i].objectInfo.id == id) return this.nodes[i];
+        }
+        return null;
+    }
 }
