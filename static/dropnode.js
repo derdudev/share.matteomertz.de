@@ -30,6 +30,19 @@ class Dropnode {
         } else {
             this.load = load;
         }
+
+        // initialize Folder PATH
+        if(this.objectInfo.parent == null){
+            this.path = new Path([this]);
+        }
+        else {
+            this.path = this.dropdown.getNode(this.objectInfo.parent).path.copy();
+            this.path.append(this);
+        }
+    }
+
+    toString(){
+        return this.objectInfo.name;
     }
 
     // builds the actual html dom element that gets displayed (with all event listeners attached)
@@ -69,6 +82,7 @@ class Dropnode {
         folderHeader.onclick = (e) => {
             if(e.target == folderHeader || e.target == folderName){
                 this._toggleClicked();
+                this.dropdown.updateFolderNavigation();
                 this.onclick(this.objectInfo);
             }
         }
@@ -147,24 +161,5 @@ class Dropnode {
                 break;
             }
         }
-    }
-}
-
-class Dropdown{
-    constructor(objectInfo) {
-        this.nodes = [];
-        this.activeNode = null;
-        this.objectInfo = objectInfo;
-    }
-
-    addNode(node){
-        this.nodes.push(node);
-    }
-
-    getNode(id){
-        for (let i = 0; i < this.nodes.length; i++) {
-            if(this.nodes[i].objectInfo.id == id) return this.nodes[i];
-        }
-        return null;
     }
 }

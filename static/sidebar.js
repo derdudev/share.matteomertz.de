@@ -1,29 +1,5 @@
 const sidebar = document.getElementById("sidebar");
 
-class Main{
-    constructor() {
-        this.intervalPeriod = 0;
-        this.mainElement = document.getElementById("main");
-        this.reset();
-    }
-    addLink(link){
-        this.mainElement.append(link);
-    }
-    clear(){
-        this.mainElement.innerHTML = "";
-    }
-    reset(){
-        this.mainElement.innerHTML = "<div id=\"main-info-text\">Navigiere einfach in einen deiner Ordner oder erstelle einen Ordner, um mit Links zu arbeiten</div>";
-    }
-    setNone(){
-        this.mainElement.innerHTML = "<div id=\"main-info-text\">Hier sind noch keine Links</div>";
-    }
-}
-
-let main = new Main();
-
-let dropdown = new Dropdown({main: main});
-
 const newLinkBtn = document.getElementById("new-link-btn");
 const newLinkBtnDeactivatedTippy = tippy(newLinkBtn, {
     arrow: true,
