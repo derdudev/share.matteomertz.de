@@ -65,14 +65,32 @@ newLinkBtn.onclick = () => {
             createButton.style.textAlign = "center";
             createButton.style.display = "block";
             createButton.style.width = "unset";
-            createButton.onclick = () => {
-                let newLink = new Link({
-                    title: "Test",
-                    link: "https://pornhub.com",
-                    linkId: "123sex",
-                    id: "MONGO_ID",
-                    interactions: 20002
-                }, main);
+            createButton.onclick = async  () => {
+                if(linkField.value != "" && titleField.value != ""){
+                    let dbLink = await fetch("/api/create",{
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                           title: titleField.value,
+                           link: linkField.value,
+                           parent: dropdown.activeNode.objectInfo.id
+                        })
+                    }).then(data => data.json()).then(data => {
+                        return data;
+                    });
+
+                    new Link({
+                        title: dbLink.title,
+                        link: dbLink.link,
+                        linkId: dbLink.id,
+                        id: dbLink._id,
+                        interactions: dbLink.interactions
+                    }, main);
+
+                    Navigator.closeUpperPopup();
+                }
             }
 
             actionButtonContainer.append(createButton);

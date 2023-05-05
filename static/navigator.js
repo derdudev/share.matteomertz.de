@@ -1,4 +1,6 @@
 class Navigator{
+    static popups = [];
+
     constructor() {
     }
 
@@ -39,5 +41,57 @@ class Navigator{
 
         background.append(popupContainer);
         document.body.append(background);
+
+        Navigator.popups.push(background);
+    }
+
+    static closeUpperPopup(){
+        Navigator.popups[Navigator.popups.length-1].remove();
+    }
+}
+
+class FieldPopup{
+    constructor(fieldList, actionButtonList) {
+    }
+
+    remove(){
+        // dom element remove function
+    }
+}
+
+class Field{
+    /*
+    options = {
+        description: String,
+        placeholder: String,
+        domId: String
+    }
+     */
+    constructor(options) {
+        this.options = options;
+
+        let domFieldContainer = document.createElement("div");
+        domFieldContainer.className = "input";
+        domFieldContainer.setAttribute("desc", options.description);
+
+        let domFieldFlexContainer = document.createElement("div");
+        domFieldFlexContainer.style.display = "flex";
+
+        let domField = document.createElement("input");
+        domField.className = "input.element";
+        domField.type = "text";
+        domField.placeholder = options.placeholder;
+        domField.id = options.domId;
+
+        domFieldFlexContainer.append(domField);
+        domFieldContainer.append(domFieldFlexContainer);
+
+        this.domElement = domFieldContainer;
+        this.domField = domField;
+    }
+}
+
+class PopupActionButton{
+    constructor() {
     }
 }
