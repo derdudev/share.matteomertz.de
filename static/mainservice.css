@@ -38,6 +38,17 @@
     grid-area: sidebar;
 }
 
+#main-folder-title-container{
+    padding: 2px 4px;
+
+    display: flex;
+    align-items: center;
+}
+
+#main-folder-title{
+    flex: 1 auto;
+}
+
 #setting-btn-container{
     grid-area: settings;
 

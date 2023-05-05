@@ -19,7 +19,7 @@ class FolderNavigation{
             this.domContainer.innerHTML = this.getPathAsString();
         } else {
             this.path = new Path();
-            this.domContainer.innerHTML = "Main";
+            this.domContainer.innerHTML = "Dashboard";
         }
     }
 }

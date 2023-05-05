@@ -1,4 +1,11 @@
-const sidebar = document.getElementById("sidebar");
+const sidebar = document.getElementById("sidebar-folder-dropdown");
+
+const mainFolderAddBtn = document.getElementById("main-folder-add-btn");
+tippy(mainFolderAddBtn, {
+    content: "Hauptordner erstellen",
+    placement: "bottom",
+    arrow: false
+})
 
 const newLinkBtn = document.getElementById("new-link-btn");
 const newLinkBtnDeactivatedTippy = tippy(newLinkBtn, {
@@ -58,6 +65,16 @@ newLinkBtn.onclick = () => {
             createButton.style.textAlign = "center";
             createButton.style.display = "block";
             createButton.style.width = "unset";
+            createButton.onclick = () => {
+                let newLink = new Link({
+                    title: "Test",
+                    link: "https://pornhub.com",
+                    linkId: "123sex",
+                    id: "MONGO_ID",
+                    interactions: 20002
+                }, main);
+            }
+
             actionButtonContainer.append(createButton);
 
             contentContainer.append(linkFieldContainer, titleFieldContainer, actionButtonContainer);
