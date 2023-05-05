@@ -87,6 +87,56 @@ const validateGetLinks = (body) => {
     return body.folderId != null && body.interval != null;
 }
 
+app.delete("/api/delete", auth, async (req, res) => {
+    if(!validateDeleteLink(req.body)) return res.status(400).send("The received body was not sufficient");
+    if(req.user){
+        let linkId = new mongoose.Types.ObjectId(req.body.linkId);
+        let deletedLink = await Link.deleteOne({ _id: linkId });
+        return res.json(deletedLink);
+    } else {
+        return res.status(403).send("A signed user token is required for authentication");
+    }
+});
+const validateDeleteLink = (body) => {
+    return body.linkId != null;
+}
+
+app.post("/api/update", auth, async (req, res) => {
+    if(!validateUpdateLink(req.body)) return res.status(400).send("The received body was not sufficient");
+    if(req.user){
+        let _id = new mongoose.Types.ObjectId(req.body.id);
+        let linkUpdate = convertBodyLink(req.body);
+        console.log(linkUpdate)
+
+        let updatedLink = await Link.updateOne({ _id: _id }, linkUpdate);
+        return res.json(updatedLink);
+    } else {
+        return res.status(403).send("A signed user token is required for authentication");
+    }
+});
+const validateUpdateLink = (body) => {
+    console.log(Object.keys(body));
+    let nonNull = Object.keys(body).every(key => body[key] != null);
+    if(!nonNull) return false;
+
+    const allowedKeys = ["id", "title", "link"];
+    let areKeysAllowed = Object.keys(body).every(key => allowedKeys.indexOf(key) != -1);
+    if(!areKeysAllowed) return false;
+
+    return true;
+}
+const convertBodyLink = (body) => {
+    let keys = Object.keys(body).filter(key => key != "id");
+
+    let res = {};
+    for (let i = 0; i < keys.length; i++) {
+        res[keys[i]] = body[keys[i]];
+    }
+
+    return res;
+}
+
+
 app.post("/api/subfolders", auth, async (req, res) => {
     if(!validateGetSubfolders(req.body)) return res.status(400).send("Body is not sufficient");
     let folderId = new mongoose.Types.ObjectId(req.body.folderId);

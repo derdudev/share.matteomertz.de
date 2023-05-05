@@ -343,6 +343,13 @@
      */
 }
 
+.negative-button{
+    background-color: #f44450;
+}
+.negative-button:hover{
+    background-color: #CC3C45;
+}
+
 @media only screen and (min-width: 1400px) {
     .main-grid {grid-template-columns: 300px 3fr;}
 }

@@ -35,6 +35,9 @@ class Main{
     addLink(link){
         this.mainElement.append(link);
     }
+    deleteLink(){
+        // TODO
+    }
     clear(){
         this.mainElement.innerHTML = "";
     }

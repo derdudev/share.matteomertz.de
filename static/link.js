@@ -5,6 +5,8 @@ class Link{
     }
      */
     constructor(objectInfo, main) {
+        this.objectInfo = objectInfo;
+
         let linkElement = document.createElement("div");
         linkElement.className = "link-element";
 
@@ -18,7 +20,9 @@ class Link{
             content: objectInfo.title,
             placement: "top-start",
             animation: "scale-subtle"
-        })
+        });
+
+        this.title = title;
 
         let link = document.createElement("span");
         link.className = "link-element-link";
@@ -165,11 +169,66 @@ class Link{
                 actionButtonContainer.style.marginTop = "20px";
                 let editButton = document.createElement("div");
                 editButton.innerText = "Speichern";
+                editButton.style.marginBottom = "10px";
                 editButton.className = "primary-btn";
                 editButton.style.textAlign = "center";
                 editButton.style.display = "block";
                 editButton.style.width = "unset";
-                actionButtonContainer.append(editButton);
+                editButton.onclick = () => {
+                    if(titleField.value != "" && linkField.value != ""){
+                        fetch("/api/update", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                id: this.objectInfo.id,
+                                title: titleField.value,
+                                link: linkField.value
+                            })
+                        }).then(data => data.json()).then(data => {
+                            if(data.acknowledged){
+                                this.objectInfo.title = titleField.value;
+                                this.objectInfo.link = linkField.value;
+                                this.title.innerText = this.objectInfo.title;
+                                Navigator.closeUpperPopup();
+                            }
+                        })
+                    }
+                }
+
+                let separator = document.createElement("hr");
+                separator.style.border = "none";
+                separator.style.height = "2px";
+                separator.style.background = "#DFDEDD";
+
+                let deleteButton = document.createElement("div");
+                deleteButton.innerText = "Diesen Link löschen";
+                deleteButton.className = "primary-btn negative-button";
+                deleteButton.style.marginTop = "10px";
+                deleteButton.style.textAlign = "center";
+                deleteButton.style.display = "block";
+                deleteButton.style.width = "unset";
+                deleteButton.onclick = () => {
+                    fetch("/api/delete", {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            linkId: this.objectInfo.id
+                        })
+                    }).then(data => data.json()).then(data => {
+                        if(data.acknowledged){
+                            this.remove();
+                            Navigator.closeUpperPopup();
+                        } else {
+                            // TODO: error handling
+                        }
+                    })
+                }
+
+                actionButtonContainer.append(editButton, separator, deleteButton);
 
                 contentContainer.append(linkFieldContainer, titleFieldContainer, actionButtonContainer)
 
@@ -181,5 +240,11 @@ class Link{
 
         linkElement.append(title, link, qrCode, interactions, editBtn);
         main.addLink(linkElement);
+
+        this.linkElement = linkElement;
+    }
+
+    remove(){
+        this.linkElement.remove();
     }
 }
